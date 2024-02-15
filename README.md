@@ -5,6 +5,8 @@
 [![License:MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/veminovici/aabel-identifier-rs)
 ![GitHub last commit](https://img.shields.io/github/last-commit/veminovici/aabel-identifier-rs)
+![GitHub watchers](https://img.shields.io/github/watchers/veminovici/aabel-identifier-rs)
+
 
 ## Description
 A Rust crate that defines some behavior related to identifiers, such:
