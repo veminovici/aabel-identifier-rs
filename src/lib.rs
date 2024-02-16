@@ -47,6 +47,8 @@ pub trait IntoIdentifierIterator {
 }
 
 /// Internal implementation of the [`IntoIdentityIterator`] trait.
+/// The iterator will return an [`Identifier`] instance. The identifier
+/// type must also implement [`Copy`] trait.
 struct IdentifierIterator<F, I>
 where
     F: Fn(&I) -> I,
