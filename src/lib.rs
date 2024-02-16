@@ -2,6 +2,19 @@
 /// as identifiers. Given two identifiers we just need
 /// to determine if they are equal (represent the same entity)
 /// or not.
+///
+/// # Example
+///
+/// ```
+/// use aabel_identifier_rs::*;
+///
+/// fn test_identifier(_id: impl Identifier) {
+///     assert!(true);
+/// }
+///
+/// let id = 10_u8;
+/// test_identifier(id);
+/// ```
 pub trait Identifier: Eq {}
 impl<T> Identifier for T where T: Eq {}
 
@@ -14,6 +27,17 @@ impl<T> PartialOrdIdentifier for T where T: Eq + PartialOrd {}
 /// The IntoIdentityIterator trait allows to create a sequence of
 /// identifiers starting with a given identifier value and using a
 /// given function which computes a new identifier.
+///
+/// # Example
+///
+/// ```
+/// use aabel_identifier_rs::*;
+///
+/// let id = 10_u8;
+/// let mut iter = id.into_ids_iterator(|id| id + 1);
+/// assert_eq!(iter.next(), Some(10));
+/// assert_eq!(iter.next(), Some(11));
+/// ```
 pub trait IntoIdentifierIterator {
     type Item: Identifier;
 
