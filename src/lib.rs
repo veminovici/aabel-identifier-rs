@@ -19,13 +19,13 @@ pub trait IntoIdentifierIterator {
 
     fn into_ids_iterator<F>(self, next: F) -> impl Iterator<Item = Self::Item>
     where
-        F: Fn(Self::Item) -> Self::Item;
+        F: Fn(&Self::Item) -> Self::Item;
 }
 
 /// Internal implementation of the [`IntoIdentityIterator`] trait.
 struct IdentifierIterator<F, I>
 where
-    F: Fn(I) -> I,
+    F: Fn(&I) -> I,
 {
     current_id: I,
     get_next_id: F,
@@ -33,27 +33,27 @@ where
 
 impl<F, I> Iterator for IdentifierIterator<F, I>
 where
-    F: Fn(I) -> I,
-    I: Clone,
+    F: Fn(&I) -> I,
+    I: Copy,
 {
     type Item = I;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let nxt = self.current_id.clone();
-        self.current_id = (self.get_next_id)(self.current_id.clone());
+        let nxt = self.current_id;
+        self.current_id = (self.get_next_id)(&self.current_id);
         Some(nxt)
     }
 }
 
 impl<T> IntoIdentifierIterator for T
 where
-    T: Clone + Identifier,
+    T: Copy + Identifier,
 {
     type Item = Self;
 
     fn into_ids_iterator<F>(self, next: F) -> impl Iterator<Item = Self::Item>
     where
-        F: Fn(Self::Item) -> Self::Item,
+        F: Fn(&Self::Item) -> Self::Item,
     {
         IdentifierIterator {
             current_id: self,
@@ -182,5 +182,13 @@ mod tests {
         let mut iter = id.into_ids_iterator(|id| id);
         assert_eq!(iter.next(), Some("a"));
         assert_eq!(iter.next(), Some("a"));
+    }
+
+    #[test]
+    fn iter_string() {
+        let id = "a".to_string();
+        let mut iter = id.into_ids_iterator(|id| id);
+        assert_eq!(iter.next(), Some(&"a".into()));
+        assert_eq!(iter.next(), Some(&"a".into()));
     }
 }
