@@ -50,6 +50,7 @@ pub trait IntoIdentifierIterator {
 struct IdentifierIterator<F, I>
 where
     F: Fn(&I) -> I,
+    I: Copy,
 {
     current_id: I,
     get_next_id: F,
